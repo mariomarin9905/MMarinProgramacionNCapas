@@ -1,0 +1,82 @@
+
+<html xmlns:th ="http://www.thymeleaf.org"
+      xmlns:layout = "http://wwww.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate = ~{layout}>
+
+
+    <main layout:fragment = "main">
+        <div class = "mt-5">
+
+            <div class ="col-12 row shadow p-4 mb-5 bg-white rounded "> 
+                <div th:if="${usuarioDireccion.Usuario.Estatus == 1}" class="col-12 text-success fs-3"><i class="bi bi-check-circle-fill"></i></div>
+                <div th:if="${usuarioDireccion.Usuario.Estatus == 0}" class="col-12 text-danger fs-3"><i class="bi bi-x-circle-fill"></i></div>
+                <div class = "col-5 d-flex justify-content-end">
+                    <img id="previewImage" style="max-width: 200px; max-height: auto"
+                         th:src="${usuarioDireccion.Usuario.Imagen != null} ?
+                         'data:image/png;base64,' + ${usuarioDireccion.Usuario.Imagen} :
+                         'https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png'"
+                         >
+                </div>
+                <div  class = "col-7 row d-flex align-items-center p-2 ">
+                    <h3 class="col-12" th:text = "|${usuarioDireccion.Usuario.Nombre} ${usuarioDireccion.Usuario.ApellidoPaterno} ${usuarioDireccion.Usuario.ApellidoMaterno}|" ></h3>                
+                    <h4 class ="col-12 " th:text = "|UserName: ${usuarioDireccion.Usuario.UserName}|"></h4>
+                    <h4 class ="col-12 " th:text = "|Correo: ${usuarioDireccion.Usuario.Email}|"></h4>
+                    <a th:href ="@{/Usuario/FormEditable(IdUsuario = ${usuarioDireccion.Usuario.IdUsuario})}" id="EditaUsuario" class = "btn btn-outline-primary col-6 fs-4"><i class="bi bi-pencil"></i></a>
+                </div>
+            </div>
+
+            <a th:href="@{/Usuario/FormEditable(IdUsuario = ${usuarioDireccion.Usuario.IdUsuario}, IdDireccion = '0')}" class="btn btn-outline-success col-2 fs-3 mb-3"><i class="bi bi-journal-plus"></i></a>
+            <div class = "table-responsive  shadow p-3 mb-5 bg-white rounded">
+                <table class = "table  border-primary-subtle text-center mb-5" >
+                    <tr class = "fs-5">
+                        <th class=" text-primary ">Editar</th>
+                        <th class = "text-success">Direccion</th>                        
+                        <th class = "text-danger">Eleminar</th>
+                    </tr>
+                    <tbody >
+                        <tr th:if ="${usuarioDireccion.Direcciones != null}"  th:each = "direccion: ${usuarioDireccion.Direcciones}">
+                            <td class = "col-1 align-middle"><a th:href="@{/Usuario/FormEditable(IdUsuario = ${usuarioDireccion.Usuario.IdUsuario}, IdDireccion = ${direccion.IdDireccion})}"  class = "btn btn btn-outline-primary fs-3"><i class="bi bi-pencil"></i></a></td>
+                            <td class = "align-middle"  >
+                                <span  th:text = "|${direccion.Calle} ${direccion.NumeroInterior} ${direccion.NumeroExterior}, |" ></span>
+                                <span  th:text = "|${direccion.Colonia.Nombre}, ${direccion.Colonia.CodigoPostal} |" ></span>
+                                <span  th:text = "|${direccion.Colonia.Municipio.Nombre},  |" ></span>   
+                                <span  th:text = "|${direccion.Colonia.Municipio.Estado.Nombre},  |" ></span>  
+                                <span  th:text = "|${direccion.Colonia.Municipio.Estado.Pais.Nombre} |" ></span>
+                            </td>
+                            <td class = "col-1 align-middle" >
+
+                                <button onclick ="borraDirecion(this)" th:id ="${direccion.IdDireccion}" class = "btn btn btn-outline-danger fs-3"><i class="bi bi-trash3"></i></button>
+                            </td>
+                        </tr>
+                        <tr th:if="${usuarioDireccion.Direcciones == null}">
+                            <td></td>
+                            <td>No hay direcciones</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            async function DireccionDelete(IdDireccion) {
+                try {
+                    const ruta = `/Usuario/DreccionDelete/${IdDireccion}`;
+                    const response = await fetch(ruta, {
+                        method: "DELETE",
+                        headers: {'Content-type': 'application/json'}
+                    });
+                    const data = await response.json();
+                    console.log(data.correct)
+                    location.reload();
+                } catch {
+                    alert("Error");
+                }
+            }
+
+            function borraDirecion(elemento) {
+                DireccionDelete(elemento.id);
+            }
+        </script>
+
+    </main>
+</html>

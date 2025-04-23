@@ -1,0 +1,99 @@
+
+<html xmlns:layout = "http://wwww.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate = ~{layout}>
+    <main layout:fragment="main">
+        <div class="col-12 shadow mt-5 mb-5 bg-white p-3 rounded">
+            <div class ="col-12 text-center"><h1>Carga un archivo</h1></div>
+            <div class="col-12">
+                <button onclick ="leerTxt()" class="col-lg-5  col-12 btn btn-outline-primary m-5 fs-4">TXT <i class="bi bi-file-text"></i></button>
+                <button onclick ="leerExcel()" class = "col-lg-5 col-12 btn btn-outline-success m-5  fs-4">EXCEL <i class="bi bi-file-earmark-spreadsheet"></i></button>
+            </div>
+            <form method ="post" th:action="@{/Usuario/CargaMasiva}" enctype="multipart/form-data" class="col-12 pl-5 ps-5 pe-5">
+                <input id="inputFile"type="file" name="archivo"/>
+                <div id="preview " class="col-12 p-3 fs-5 rounded border border-secondary">
+                    <p id="fileName"></p>
+                </div>
+                <button type="submit" id="btnCargaArchivo" ><i class="bi bi-upload"></i></button>
+            </form>
+        </div>
+        <a th:if="${session.urlFile != null}" class="btn btn-warning col-12" th:href="@{/Usuario/CargaMasiva/Procesar}" >Procesar Archivo</a>  
+        <div th:if ="${listaErrores != null && session.urlFile == null}" class="col-12 shadow mt-5 mb-5 bg-danger  p-3 rounded">
+            <h4 class ="text-white">Errores</h4>
+            <table class = "table  text-center ">
+                <thead>
+                <tr>
+                    <th>Fila</th>
+                    <th>Mensaje</th>
+                    <th>Descripcion</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each = "error : ${listaErrores}">
+                        <td th:text = "${error.Fila}"></td>
+                        <td th:text = "${error.Mensaje}"></td>
+                        <td th:text = "${error.Descripcion}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            
+        <script>
+            function leerTxt() {
+                $("#inputFile").attr("accept", ".txt");
+                
+                $("#inputFile").click();
+                $("#btnCargaArchivo").removeClass("btn-outline-secondary ");
+                $("#btnCargaArchivo").addClass("btn-outline-primary");
+            }
+            function leerExcel() {
+                $("#inputFile").attr("accept", ".xlsx");
+                
+                $("#inputFile").click();
+                $("#btnCargaArchivo").removeClass("btn-outline-secondary ");
+                $("#btnCargaArchivo").addClass("btn-outline-success");
+            }
+            $(document).ready(() => {
+                $("#btnCargaArchivo").addClass("col-12 mt-5 btn btn-outline-secondary fs-4");
+                $("#btnCargaArchivo").prop("disabled", true);
+                const input = document.querySelector("input");
+                input.style.opacity = 0;
+                $("#fileName").prepend("No hay archivo seleccionado.");
+                $("#inputFile").change(() => {
+                    const curFiles = document.getElementById('inputFile').files;
+                    if (curFiles.length === 0) {
+                        $("#fileName").empty();
+                        $("#fileName").prepend("No se seleccion ningun archivo");
+                        $("#fileName").addClass(" text-primary-emphasis");
+                    } else {
+                        if (curFiles.length <= 1) {
+                            const file = curFiles[0];
+                            if (validFileTxt(file)) {
+                                $("#fileName").empty();
+                                $("#fileName").prepend(`<i class="bi bi-file-earmark-text"></i> Nombre del archivo: ${file.name}`);
+                                
+                                
+                                $("#btnCargaArchivo").prop("disabled", false);
+                            } else {
+                                $("#fileName").empty();
+                                $("#fileName").prepend(`<i class="bi bi-x-square"></i> Tipo de archivo incorrecto.`);
+                            }
+                        } else {
+                            $("#fileName").empty();
+                            $("#fileName").prepend("Selecionar solo un archivo");
+                        }
+                    }
+                });
+            });
+            function validFileTxt(file) {
+                const name = file.name;
+                if((name.split('.').pop() ==="txt") || (name.split('.').pop() ==="xlsx")){
+                    return true;
+                }else {return false};
+                
+            }
+        </script>
+
+    </main>
+
+
+</html>

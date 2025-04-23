@@ -1,0 +1,5 @@
+Martin|Paredes|Contreras|MartineP|martinpa@email.com|123456|10-04-1994|H|5577889911|5577889911|MPCM100494|1|2|Primera de Mayo|1|100|8
+Loreta|Ortiz|Piña|PiñaLore|piñalore@email.com|123456|10-04-2001|M|2277889911|2277889911|LOP100401|1|2|15 de septiembre|A1|2|7
+Munuel|Pedrero|Alvarez|MxPdrero|mxmanuel@email.com|123456|11-11-1999|H|2277589911|2277589911|MPA111199|1|2|Independencia|1|5|22
+Hugo Rafael|Chaves|Frias|ChFrias|chfrias@email.com|123456|28-07-1954|M|5577887511|5577887511|HCF100494|1|2|Primera de Mayo|1|100|8
+Julio Cesar|Chavez|Gonzalez|Chavez|chavez@email.com|123456|10-06-1962|H|5521889911|5521889911|JCG100694|1|40|Primera de Mayo|1|100|8
