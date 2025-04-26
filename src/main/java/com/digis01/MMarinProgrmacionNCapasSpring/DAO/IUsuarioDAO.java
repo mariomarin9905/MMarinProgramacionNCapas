@@ -22,4 +22,12 @@ public interface IUsuarioDAO {
     Result UsuarioUpdateByEstatus(int IdUsuario,int Estatus);
     
     Result UsuarioGetAllDinamico(String Nombre, String ApellidoPaterno,String ApellidoMaterno,int IdRol);
+    
+    //Metods JPA
+    Result UsuarioGetAllJPA();    
+    Result UsuarioAddJPA(UsuarioDireccion usuarioDireccion);
+    Result DireccionesByIdUsuarioJPA(int IdUsuario);
+    Result UsuarioByIdJPA(int IdUsuario);
+    Result UsuarioUpdateJPA(Usuario usuario);
+     Result UsuarioDireccionDeleteJPA(int IdUsuario);
 }

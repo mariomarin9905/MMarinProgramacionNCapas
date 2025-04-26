@@ -5,8 +5,8 @@
         <div class="col-12 shadow mt-5 mb-5 bg-white p-3 rounded">
             <div class ="col-12 text-center"><h1>Carga un archivo</h1></div>
             <div class="col-12">
-                <button onclick ="leerTxt()" class="col-lg-5  col-12 btn btn-outline-primary m-5 fs-4">TXT <i class="bi bi-file-text"></i></button>
-                <button onclick ="leerExcel()" class = "col-lg-5 col-12 btn btn-outline-success m-5  fs-4">EXCEL <i class="bi bi-file-earmark-spreadsheet"></i></button>
+                <button onclick ="leerTxt()" class="col-xl-5 col-12 btn btn-outline-primary m-xl-5  mt-2 fs-4">TXT <i class="bi bi-file-text"></i></button>
+                <button onclick ="leerExcel()" class = "col-xl-5 col-12 btn btn-outline-success m-xl-5 mt-2  fs-4">EXCEL <i class="bi bi-file-earmark-spreadsheet"></i></button>
             </div>
             <form method ="post" th:action="@{/Usuario/CargaMasiva}" enctype="multipart/form-data" class="col-12 pl-5 ps-5 pe-5">
                 <input id="inputFile"type="file" name="archivo"/>

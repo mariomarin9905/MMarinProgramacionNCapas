@@ -8,6 +8,7 @@ public interface IMunicipio {
     
     Result MunicipioByIdEstado(int IdEstado);
     
+    Result MunicipioByIdEstadoJPA(int IdEstado);
     
     
 }

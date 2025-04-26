@@ -7,4 +7,6 @@ import com.digis01.MMarinProgrmacionNCapasSpring.ML.Result;
 public interface IRolDAO {
     
     Result RolGetAll();
+    
+    Result RolGetAllJPA();
 }

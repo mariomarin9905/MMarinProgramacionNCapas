@@ -3,6 +3,8 @@ package com.digis01.MMarinProgrmacionNCapasSpring.DAO;
 
 import com.digis01.MMarinProgrmacionNCapasSpring.ML.Result;
 import com.digis01.MMarinProgrmacionNCapasSpring.ML.Rol;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class RolDAOImplementation implements IRolDAO {
      
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    private EntityManager entityManager;
     
     @Override
     public Result RolGetAll(){
@@ -43,5 +48,29 @@ public class RolDAOImplementation implements IRolDAO {
             result.ex = e;
         }
         return result; 
+    }
+
+    @Override
+    public Result RolGetAllJPA() {
+        Result result = new Result();
+        try {
+            TypedQuery<com.digis01.MMarinProgrmacionNCapasSpring.JPA.Rol> queryRol = this.entityManager.createQuery("FROM Rol", com.digis01.MMarinProgrmacionNCapasSpring.JPA.Rol.class);
+            List<com.digis01.MMarinProgrmacionNCapasSpring.JPA.Rol> rolJPA =queryRol.getResultList();
+            result.objects = new ArrayList();
+            for (com.digis01.MMarinProgrmacionNCapasSpring.JPA.Rol rol : rolJPA) {
+                Rol rolML = new Rol();
+                rolML.setIdRol(rol.getIdRol());
+                rolML.setNombre(rol.getNombre());
+                result.objects.add(rolML);
+                
+            }
+            result.correct = true;
+        } catch (Exception e) {
+            result.correct = false;
+            result.errorMessage = e.getLocalizedMessage();
+            result.ex = e;
+            result.objects = null;
+        }
+        return result;
     }
 }

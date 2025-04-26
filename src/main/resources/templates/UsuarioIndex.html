@@ -3,9 +3,9 @@
       layout:decorate = ~{layout}>
     <main layout:fragment = "main">
         <div class = "mt-3">
-                     
+
             <div class="col-12 row mt-4 ">
-                
+
                 <form class ="col-12 row d-flex justify-content-center" method="POST" action="/Usuario/GetAllDinamico">
                     <div class="col-xl-2 col-12 ">
                         <label class="form-labe">Nombre</label>
@@ -21,20 +21,20 @@
                     </div> 
                     <div class="col-xl-2 col-12  align-middle">
                         <label class = "form-labe ">Rol</label>
-                            <select class="form-control form-select form-select-lg mb-3 fs-6" aria-label="Large select example" th:field="*{usuarioBusqueda.rol.IdRol}">
-                                <option  value ="0" >Selecciona un Rol</option>
-                                <option th:each ="rol : ${roles}" class ="fs-6" th:value = "${rol.IdRol}" th:text = "${rol.Nombre}"></option>
-                            </select>
+                        <select class="form-control form-select form-select-lg mb-3 fs-6 border-success border-2" aria-label="Large select example" th:field="*{usuarioBusqueda.rol.IdRol} " style="background-color: #f4f6f6">
+                            <option  value ="0" >Selecciona un Rol</option>
+                            <option th:each ="rol : ${roles}" class ="fs-6" th:value = "${rol.IdRol}" th:text = "${rol.Nombre}"></option>
+                        </select>
                     </div>
                     <div class = "col-xl-3 col-12 " >                       
                         <button class="col-12 btn btn-outline-info fs-3 mt-4"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
-                
+
             </div>
             <a href="/Usuario/form/0" class="btn btn-outline-success col-xl-2 col-12 fs-3"><i class="bi bi-person-plus"></i></a>   
             <div class = "col-12 table-responsive shadow p-3 mb-5 mt-3 bg-white rounded">
-                <table class = "table  border-primary-subtle text-center rounded">
+                <table class = "table  border-primary-subtle text-center rounded fs-6">
                     <thead class = "">
                         <tr class = "fs-5">
                             <th class=" text-primary ">Editar</th>
@@ -76,19 +76,20 @@
                                     Correo: <span th:text = "${usuarioDireccion.Usuario.Email}"></span>
                                 </p>
                             </td>
-                            <td class = "col-2 align-middle">
+                            <td class = "col-3 align-middle">
                                 <p th:if ="${usuarioDireccion.Direcciones == null}"  >No hay direcciones</p>
-                                <select class="form-select" id="inputGroupSelect02" th:if ="${usuarioDireccion.Direcciones != null}"  >
-                                    <option   th:each ="direccion : ${usuarioDireccion.Direcciones}" >
-                                    <span  th:text = "|${direccion.Calle} ${direccion.NumeroInterior} ${direccion.NumeroExterior}, |" ></span>
-                                    <span  th:text = "|${direccion.Colonia.Nombre}, ${direccion.Colonia.CodigoPostal} |" ></span>
-                                    <span  th:text = "|${direccion.Colonia.Municipio.Nombre},  |" ></span>   
-                                    <span  th:text = "|${direccion.Colonia.Municipio.Estado.Nombre},  |" ></span>  
-                                    <span  th:text = "|${direccion.Colonia.Municipio.Estado.Pais.Nombre} |" ></span>  
-                                    </option>                                    
-                                </select>        
+                                <div class = "overflow-auto" style="height: 150px" th:if ="${usuarioDireccion.Direcciones != null}">
+                                    <ul class="list-group" >
+                                        <li class="list-group-item  list-group-item-secondary text-wrap"th:each ="direccion : ${usuarioDireccion.Direcciones}" >
+                                            <span  th:text = "|${direccion.Calle} ${direccion.NumeroInterior} ${direccion.NumeroExterior}, |" ></span>
+                                            <span  th:text = "|${direccion.Colonia.Nombre}, ${direccion.Colonia.CodigoPostal} |" ></span>
+                                            <span  th:text = "|${direccion.Colonia.Municipio.Nombre},  |" ></span>   
+                                            <span  th:text = "|${direccion.Colonia.Municipio.Estado.Nombre},  |" ></span>  
+                                            <span  th:text = "|${direccion.Colonia.Municipio.Estado.Pais.Nombre} |" ></span>  
+                                        </li>                                       
+                                    </ul>
 
-
+                                </div>
                             </td> 
                             <td class = "col-1 align-middle" >
                                 <div class="col-12 form-check form-switch d-flex justify-content-end">
@@ -129,59 +130,65 @@
         </div>
         <script>
             var idBandera;
-      
+
             async function fetchBorrarUsuario(idUsuario) {
-                try{
-                    const response = await fetch(`/Usuario/UsuarioDelete/${idUsuario}`,{
+                try {
+                    const response = await fetch(`/Usuario/UsuarioDelete/${idUsuario}`, {
                         method: 'DELETE',
                         headers: {'Content-type': 'application/json'}
-                    }) ;
+                    });
                     const data = response.json();
                     console.log(data.correct);
                     location.reload();
-                }catch{
+                } catch {
                     alert("Error");
                 }
             }
-            function alertaBorrarUsuario(element) {              
+            function alertaBorrarUsuario(element) {
                 idBandera = element.id;
                 document.getElementById('modalAlerta').click();
-           }
-           function borrarUsuario(){
-               $("#cierraModal").click();
-               console.log(idBandera);
-               fetchBorrarUsuario(idBandera);
-           }
-           
-           async function ActualizaEstado(elemento, Estatus){
-               $.ajax({
-                   type:"GET",
-                   url: `/Usuario/UsuarioUpdateByEstatus?IdUsuario=${elemento.value}&Estatus=${Estatus}`,
-                   dataType: "json",
-                   success:(data)=>{
-                       console.log(data.correct);
-                       if(Estatus >0){
-                           elemento.checked = true;
-                       }else{
+            }
+            function borrarUsuario() {
+                $("#cierraModal").click();
+                console.log(idBandera);
+                fetchBorrarUsuario(idBandera);
+            }
+
+            async function ActualizaEstado(elemento, Estatus) {
+                $.ajax({
+                    type: "POST",
+                    url: `/Usuario/UsuarioUpdateByEstatus?IdUsuario=${elemento.value}&Estatus=${Estatus}`,
+                    dataType: "json",
+                    success: (data) => {
+                        console.log(data.correct);
+                        if (Estatus > 0) {
+                            elemento.checked = true;
+                        } else {
                             elemento.checked = false;
-                       }
-                       elemento.disabled = false;
-                   },
-                   error:()=>{
-                       alert("Error en cambiar estatus");
-                   }
-               });
-           }
-           function cambiaEstatus(elemento){
-               elemento.disabled = true;              
-               if(elemento.checked ){
-                   console.log("Si");
-                   ActualizaEstado(elemento,1);
-               }else{
-                   console.log("No");
-                   ActualizaEstado(elemento,0);
-               }
-           }
+                        }
+                        elemento.disabled = false;
+                    },
+                    error: () => {
+                          if (Estatus > 0) {
+                            elemento.checked = false;
+                        } else {
+                            elemento.checked = true;
+                        }
+                        elemento.disabled = false;
+                        alert("Error en cambiar estatus");
+                    }
+                });
+            }
+            function cambiaEstatus(elemento) {
+                elemento.disabled = true;
+                if (elemento.checked) {
+                    console.log("Si");
+                    ActualizaEstado(elemento, 1);
+                } else {
+                    console.log("No");
+                    ActualizaEstado(elemento, 0);
+                }
+            }
         </script> 
     </main>    
 </html>

@@ -6,4 +6,6 @@ import com.digis01.MMarinProgrmacionNCapasSpring.ML.Result;
 public interface IPaisDAO {
     
     Result PaisGetAll();
+    
+    Result PaisGetAllJPA();
 }

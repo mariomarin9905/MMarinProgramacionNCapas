@@ -11,20 +11,18 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </head>
     <body style = "background-color: #f4f6f6">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
+        <nav class="navbar  navbar-expand-lg" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
             <div class="container">
-                <div class="col-10">
-                    <a th:href="@{/Usuario}" class="navbar-brand fs-2 text-white" >Usuarios <i class="bi bi-emoji-sunglasses-fill"></i></a>
-                </div>
-                <div class="col-2">
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">                           
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-outline-warning" th:href="@{/Usuario/CargaMasiva}">Carga Masiva</a>
-                            </li>                           
-                        </ul>
-                       
-                    </div>
+                <a class="navbar-brand fs-2 " th:href="@{/Usuario}" >Usuarios <i class="bi bi-emoji-sunglasses-fill"></i></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link " th:href="@{/Usuario/CargaMasiva}">Carga Masiva</a>
+                        </li>                       
+                    </ul>
                 </div>
             </div>
         </nav>

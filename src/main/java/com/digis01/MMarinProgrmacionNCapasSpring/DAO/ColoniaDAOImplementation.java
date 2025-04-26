@@ -5,6 +5,8 @@ import com.digis01.MMarinProgrmacionNCapasSpring.ML.Estado;
 import com.digis01.MMarinProgrmacionNCapasSpring.ML.Municipio;
 import com.digis01.MMarinProgrmacionNCapasSpring.ML.Pais;
 import com.digis01.MMarinProgrmacionNCapasSpring.ML.Result;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ public class ColoniaDAOImplementation implements IColoniaDAO {
     @Autowired
     private JdbcTemplate jdbcTamplate;
 
+    @Autowired
+    private EntityManager entityManager;
+    
     @Override
     public Result ColoniaBydIdMunicipio(int IdMunicipio) {
         Result result = new Result();
@@ -82,6 +87,22 @@ public class ColoniaDAOImplementation implements IColoniaDAO {
             result.errorMessage = e.getLocalizedMessage();
             result.ex = e;
             result.objects = null;
+        }
+        return result;
+    }
+
+    @Override
+    public Result ColoniaBydIdMunicipioJPA(int IdMunicipio) {
+        Result result = new Result();
+        try {
+            TypedQuery<com.digis01.MMarinProgrmacionNCapasSpring.JPA.Colonia> queryColonia = this.entityManager.createQuery("FROM Colonia WHERE Municipio.IdMunicipio = :idmunicipio", com.digis01.MMarinProgrmacionNCapasSpring.JPA.Colonia.class);
+           queryColonia.setParameter("idmunicipio", IdMunicipio);
+            
+        } catch (Exception e) {
+            result.correct = false;
+            result.errorMessage  =  e.getLocalizedMessage();
+            result.ex = e;
+            result.objects =null;
         }
         return result;
     }

@@ -13,5 +13,9 @@ public interface IDireccion {
     
     Result DireccionUpdate(int IdUsuario, Direccion direccion);
     Result DireccionDelete(int IdDireccion);
-    
+    //Metodos JPA
+    Result DireccionDeleteJPA(int IdDireccion);      
+    Result DireccionGetByIdJPA(int IdDireccion);    
+    Result DireccionAddJPA(int IdUsuario, Direccion direccion);
+    Result DireccionUpdateJPA(int IdUsuario,Direccion direccion);
 }
