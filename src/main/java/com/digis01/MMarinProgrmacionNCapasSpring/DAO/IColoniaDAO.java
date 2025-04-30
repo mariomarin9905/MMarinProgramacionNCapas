@@ -11,5 +11,6 @@ public interface IColoniaDAO {
     Result ColoniaByCodigoPostal(String CodigoPostal);
     
     Result ColoniaBydIdMunicipioJPA(int IdMunicipio);
+    Result ColoniaByCodigoPostalJPA(String CodigoPostal);
     
 }

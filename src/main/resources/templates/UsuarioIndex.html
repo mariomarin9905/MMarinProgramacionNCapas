@@ -4,9 +4,8 @@
     <main layout:fragment = "main">
         <div class = "mt-3">
 
-            <div class="col-12 row mt-4 ">
-
-                <form class ="col-12 row d-flex justify-content-center" method="POST" action="/Usuario/GetAllDinamico">
+            <div class="col-12 mt-4 ">
+                <form class ="col-12 row" method="POST" action="/Usuario/BusquedaDinamica">
                     <div class="col-xl-2 col-12 ">
                         <label class="form-labe">Nombre</label>
                         <input class ="form-control rounded-2 border-success border-2 p-1"  th:field="*{usuarioBusqueda.Nombre}" type ="text" style="background-color: #f4f6f6" />
@@ -26,11 +25,18 @@
                             <option th:each ="rol : ${roles}" class ="fs-6" th:value = "${rol.IdRol}" th:text = "${rol.Nombre}"></option>
                         </select>
                     </div>
-                    <div class = "col-xl-3 col-12 " >                       
+                     <div class="col-xl-2 col-12  align-middle">
+                        <label class = "form-labe ">Estatus</label>
+                        <select class="form-control form-select form-select-lg mb-3 fs-6 border-success border-2" aria-label="Large select example" th:field="*{usuarioBusqueda.Estatus} " style="background-color: #f4f6f6">
+                            <option  value ="-1" selected>Selecciona Estauts</option>
+                            <option value ="1" >Activo</option>
+                            <option value = "0" >Inactivo</option>
+                        </select>
+                    </div>
+                    <div class = "col-xl-2 col-12 " >                       
                         <button class="col-12 btn btn-outline-info fs-3 mt-4"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
-
             </div>
             <a href="/Usuario/form/0" class="btn btn-outline-success col-xl-2 col-12 fs-3"><i class="bi bi-person-plus"></i></a>   
             <div class = "col-12 table-responsive shadow p-3 mb-5 mt-3 bg-white rounded">
@@ -39,6 +45,7 @@
                         <tr class = "fs-5">
                             <th class=" text-primary ">Editar</th>
                             <th class = "text-success">Imagen</th>
+                            <th class = "text-success">Rol</th>
                             <th class = "text-success">Nombre</th>
                             <th class = "text-success">UserName</th>
                             <th class = "text-success">Contacto</th>
@@ -48,7 +55,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr  th:each = "usuarioDireccion :  ${listaUsuario}">
+                        <tr  th:if="${listaUsuario != null}" th:each = "usuarioDireccion :  ${listaUsuario}">
                             <td class = "col-1 align-middle" >
                                 <a th:href="@{/Usuario/form/{IdUsuario}(IdUsuario = ${usuarioDireccion.Usuario.IdUsuario})}" class = "btn btn btn-outline-primary fs-3"><i class="bi bi-pencil"></i></a>
                             </td>
@@ -61,7 +68,10 @@
                                          >
                                 </div>
                             </td>
-                            <td class = "col-1 align-middle " >
+                             <td class = "col-1 align-middle " >
+                                <p class ="fw-semibold fs-5" th:text = "${usuarioDireccion.Usuario.rol.Nombre}" ></p>
+                            </td>
+                            <td class = "col-2 align-middle " >
                                 <p th:text = "|${usuarioDireccion.Usuario.Nombre} ${usuarioDireccion.Usuario.ApellidoPaterno} ${usuarioDireccion.Usuario.ApellidoMaterno}|" ></p>
                             </td>
                             <td class = "col-1 align-middle" th:text = "${usuarioDireccion.Usuario.UserName}"></td>
@@ -101,6 +111,17 @@
                                 <!<!-- Eliminar Usuario -->
                                 <button class = "btn btn btn-outline-danger fs-3"  th:id ="${usuarioDireccion.Usuario.IdUsuario}" onclick = "alertaBorrarUsuario(this)"><i class="bi bi-trash3"></i></button>
                             </td>
+                        </tr>
+                          <tr th:if="${listaUsuario == null}">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td >No hay usuarios</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>                
@@ -156,7 +177,7 @@
 
             async function ActualizaEstado(elemento, Estatus) {
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     url: `/Usuario/UsuarioUpdateByEstatus?IdUsuario=${elemento.value}&Estatus=${Estatus}`,
                     dataType: "json",
                     success: (data) => {

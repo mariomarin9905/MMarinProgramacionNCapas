@@ -92,7 +92,16 @@ public class UsuarioController {
         model.addAttribute("listaUsuario", result.objects);
         return "UsuarioIndex";
     }
-
+    @PostMapping("BusquedaDinamica")
+    public String BusquedaDinamica(@ModelAttribute Usuario usuario, Model model ){
+        Result result = this.UsuarioDAOImplementacion.UsuarioGetAllDinamicoJPA(usuario);
+        Usuario usuairoBusqueda = usuario;
+        model.addAttribute("roles", RolDAOImplementation.RolGetAll().object);
+        model.addAttribute("usuarioBusqueda", usuairoBusqueda);
+        model.addAttribute("listaUsuario", result.objects);        
+        return "UsuarioIndex";
+    }
+    
     @PostMapping("GetAllDinamico")
     public String UsuarioIndex(@ModelAttribute Usuario usuario) {
 
@@ -261,21 +270,24 @@ public class UsuarioController {
     @GetMapping("ColoniaByIdMunicipio/{IdMunicipio}")
     @ResponseBody
     public Result ColoniaBydIdMunicipio(@PathVariable int IdMunicipio) {
-        Result result = this.coloniaDAOImplementation.ColoniaBydIdMunicipio(IdMunicipio);
+        //Result result = this.coloniaDAOImplementation.ColoniaBydIdMunicipio(IdMunicipio);
+        Result result = this.coloniaDAOImplementation.ColoniaBydIdMunicipioJPA(IdMunicipio);
         return result;
     }
 
     @GetMapping("ColoniaByCodigoPostal/{CodigoPostal}")
     @ResponseBody
     public Result ColoniaByCodigoPostal(@PathVariable String CodigoPostal) {
-        Result result = this.coloniaDAOImplementation.ColoniaByCodigoPostal(CodigoPostal);
+        //Result result = this.coloniaDAOImplementation.ColoniaByCodigoPostal(CodigoPostal);
+        Result result = this.coloniaDAOImplementation.ColoniaByCodigoPostalJPA(CodigoPostal);
         return result;
     }
 
-    @PostMapping("UsuarioUpdateByEstatus")
+    @GetMapping("UsuarioUpdateByEstatus")
     @ResponseBody
     public Result UsuarioUpdateByEstatus(@RequestParam int IdUsuario, @RequestParam int Estatus) {
-        Result result = this.UsuarioDAOImplementacion.UsuarioUpdateByEstatus(IdUsuario, Estatus);
+        //Result result = this.UsuarioDAOImplementacion.UsuarioUpdateByEstatus(IdUsuario, Estatus);
+        Result result = this.UsuarioDAOImplementacion.UsuarioUpdateByEstatusJPA(IdUsuario, Estatus);
         return result;
     }
 
